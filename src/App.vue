@@ -12,18 +12,14 @@
     .mode
       flip-item(:total="5" :current="timeArr.val[4]")
       flip-item(:total="9" :current="timeArr.val[5]")
-  .date.vertical( v-if="!screenTransform.val")
+  .date(:class="screenTransform.val ? 'horizontal': 'vertical'")
     p {{ date.val }}
-    p {{ weather.val }}
-  .date.horizontal(v-else)
-    | {{ date.val }} {{ weather.val }}
-    //- span(v-for="(item, index) in dateHorizontal" :key="index") {{ item }}
 </template>
 
 <script setup lang="ts">
 import { defineComponent, reactive, ref, onBeforeMount, onMounted, computed } from 'vue'
 import FlipItem from './components/FlipItem.vue'
-import { getTimeArr, getDate, getLocation } from './utils/index'
+import { getTimeArr, getDate } from './utils/index'
 
 interface TimerArr {
   val: number[]
@@ -35,7 +31,6 @@ const timeArr = reactive(obj)
 const screenTransform = reactive({ val: false })
 const date = reactive({ val: '' })
 const weather = reactive({ val: '' })
-const dateHorizontal = computed(() => (date.val + weather.val).split(''))
 
 let timer: number = 0
 const startTimer = (): void => {
@@ -49,10 +44,6 @@ const startTimer = (): void => {
 
 onBeforeMount(() => {
   startTimer()
-  getLocation().then(res => {
-    console.log(res)
-    weather.val = `${res.city} 天气: ${res.text}`
-  })
 })
 
 
@@ -134,18 +125,19 @@ ul
     font-weight bold
     color #d7d6d6
     width 100%
-    height 60px
+    height 30px
+    line-height 30px
     text-align center
     // color transparent
     // background-image linear-gradient(to right, #8E2DE2, #4A00E0)
     // background-clip text
     // -webkit-background-clip text
     &.vertical
-      bottom 40px
+      bottom 20px
       left 0
       
     &.horizontal
-      top 0
+      top 20px
       right 0
 
 #weather 
