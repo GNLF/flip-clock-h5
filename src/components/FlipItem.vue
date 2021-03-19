@@ -11,29 +11,31 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { defineProps, ref, watch } from 'vue'
+import type { Ref } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 
 const props = defineProps({
   total: {
     type: Number,
-    default: 9
+    default: 9,
   },
   current: {
     type: Number,
-    default: -1
-  }
-})
-let isPlay: Ref<boolean> = ref(false)
-let before: Ref<number> = ref(props.total === props.current ? -1 : props.total)
+    default: -1,
+  },
+});
+let isPlay: Ref<boolean> = ref(false);
+let before: Ref<number> = ref(props.total === props.current ? -1 : props.total);
 
-watch(() => props.current, (current: number, preCurrent: number): void => {
-  before.value = preCurrent
-  if (!isPlay.value) {
-    isPlay.value = true
+watch(
+  () => props.current,
+  (current: number, preCurrent: number): void => {
+    before.value = preCurrent;
+    if (!isPlay.value) {
+      isPlay.value = true;
+    }
   }
-})
-
+);
 </script>
 
 <style lang="stylus">
@@ -43,7 +45,7 @@ fontSize = 80px
 lineWidth = 3px
 radius = 6px
 
-.flip 
+.flip
   position relative
   margin 5px
   width width
@@ -53,7 +55,7 @@ radius = 6px
   line-height height - lineWidth
   border-radius radius
   box-shadow 0 1px 10px rgba(0, 0, 0, 0.7)
-  .item 
+  .item
     list-style none
     z-index 1
     position absolute
@@ -63,25 +65,25 @@ radius = 6px
     height 100%
     perspective 200px
     transition opacity 0.3s
-    &.active 
+    &.active
       z-index 2
-    
-    &:first-child 
+
+    &:first-child
       z-index 2
-    
+
     .up,
-    .down 
+    .down
       z-index 1
       position absolute
       left 0
       width 100%
       height 50%
       overflow hidden
-    
-    .up 
+
+    .up
       transform-origin 50% 100%
       top 0
-      &:after 
+      &:after
         content ""
         position absolute
         top ((height - lineWidth) / 2)
@@ -90,14 +92,14 @@ radius = 6px
         width 100%
         height lineWidth
         background-color rgba(0, 0, 0, 0.4)
-      
-    
-    .down 
+
+
+    .down
       transform-origin 50% 0%
       bottom 0
       transition opacity 0.3s
-    
-    .inn 
+
+    .inn
       position absolute
       left 0
       z-index 1
@@ -108,19 +110,19 @@ radius = 6px
       text-align center
       background-color #333
       border-radius radius
-    
-    .up .inn 
-      top 0
-    
-    .down .inn 
-      bottom 0
-    
-  
 
-.part 
+    .up .inn
+      top 0
+
+    .down .inn
+      bottom 0
+
+
+
+.part
   position relative
   &:after,
-  &:before 
+  &:before
     position absolute
     top 50%
     z-index 10
@@ -130,103 +132,101 @@ radius = 6px
     width 2px
     height 16px
     background-image linear-gradient(#8d8d8d, #1c1c1c)
-  
-  &:after 
+
+  &:after
     transform translate(-2px, -50%)
     left auto
     right 0
-  
 
-.play 
-  .item 
-    &.before 
+
+.play
+  .item
+    &.before
       z-index 3
-    
-    &.active 
+
+    &.active
       animation asd 0.5s linear 0.5s both
       z-index 2
-    
-    &.before .up 
+
+    &.before .up
       z-index 2
       animation turn-up 0.5s linear both
-    
-    &.active .down 
+
+    &.active .down
       z-index 2
       animation turn-down 0.5s linear 0.5s both
-    
-  
 
 
-@keyframes turn-down 
-  0% 
+
+
+@keyframes turn-down
+  0%
     transform rotateX(90deg)
-  
-  100% 
+
+  100%
     transform rotateX(0deg)
-  
 
 
-@keyframes turn-up 
-  0% 
+
+@keyframes turn-up
+  0%
     transform rotateX(0deg)
-  
-  100% 
+
+  100%
     transform rotateX(-90deg)
-  
 
 
-@keyframes asd 
-  0% 
+
+@keyframes asd
+  0%
     z-index 2
-  
-  5% 
+
+  5%
     z-index 4
-  
-  100% 
+
+  100%
     z-index 4
-  
 
 
-.play 
-  .shadow 
+
+.play
+  .shadow
     position absolute
     width 100%
     height 100%
     z-index 2
-  
-  .before .up .shadow 
+
+  .before .up .shadow
     background linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 1) 100%)
     animation show 0.5s linear both
-  
-  .active .up .shadow 
+
+  .active .up .shadow
     background linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 1) 100%)
     animation hide 0.5s linear 0.3s both
-  
-  .before .down .shadow 
+
+  .before .down .shadow
     background linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 100%)
     animation show 0.5s linear both
-  
-  .active .down .shadow 
+
+  .active .down .shadow
     background linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 100%)
     animation hide 0.5s linear 0.3s both
-  
 
 
-@keyframes show 
-  0% 
+
+@keyframes show
+  0%
     opacity 0
-  
-  100% 
+
+  100%
     opacity 1
-  
 
 
-@keyframes hide 
-  0% 
+
+@keyframes hide
+  0%
     opacity 1
-  
-  100% 
+
+  100%
     opacity 0
-  
-
 </style>

@@ -20,10 +20,12 @@
 import type { Ref } from 'vue'
 import { defineComponent, ref, onBeforeMount, onMounted } from 'vue'
 import FlipItem from './components/FlipItem.vue'
-import { getTimeArr, getDate } from './utils/index'
+import { getTimeArr, getDate } from './utils'
 
 const timeArr: Ref<number[]> = ref([])
-const screenTransform: Ref<boolean> = ref(false)
+const screenTransform: Ref<boolean> = ref(
+  window.innerHeight < window.innerWidth
+)
 const date: Ref<string> = ref('')
 
 let timer: number = 0
@@ -34,19 +36,15 @@ const startTimer = (): void => {
     date.value = getDate(new Date(), '{y}-{m}-{d}')
     startTimer()
   }, 1000)
-}
+};
 
 onBeforeMount(() => {
   startTimer()
 })
 
-
 onMounted(() => {
-  window.onload = () => {
-    screenTransform.value = window.innerHeight < window.innerWidth
-  }
   window.onresize = () => {
-    screenTransform.value = window.innerHeight < window.innerWidth
+    screenTransform.value = window.innerHeight < window.innerWidth;
   }
 })
 
@@ -60,7 +58,6 @@ defineComponent({
     FlipItem
   }
 })
-
 </script>
 
 <style lang="stylus">
@@ -70,16 +67,16 @@ defineComponent({
   -webkit-box-sizing inherit
   box-sizing inherit
 
-html 
+html
   text-rendering optimizeLegibility
   font-family Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 p,
-ul 
+ul
   margin 0
   padding 0
 
-.lock-screen 
+.lock-screen
   position fixed
   top 0
   left 0
@@ -91,10 +88,10 @@ ul
   flex-direction column
   background-color #1f1f1f
   z-index 1002
-  &.modalShow 
+  &.modalShow
     filter blur(4px)
-  
-  .open-lock 
+
+  .open-lock
     position absolute
     top 20px
     left 50%
@@ -107,12 +104,12 @@ ul
     color #e2e2e2
     font-size 1.5rem
     cursor pointer
-    .el-icon-lock 
+    .el-icon-lock
       font-size 2rem
       width 100%
       margin-bottom 10px
-    
-  
+
+
   .date
     position absolute
     font-size 1.2rem
@@ -129,12 +126,12 @@ ul
     &.vertical
       bottom 20px
       left 0
-      
+
     &.horizontal
       top 20px
       right 0
 
-#weather 
+#weather
   position absolute
   top 0
   left 0
@@ -142,45 +139,43 @@ ul
   color #e2e2e2
   width 100%
 
-.screenTransform 
+.screenTransform
   .clock-container.mobile
     flex-wrap nowrap
-    .mode 
+    .mode
       transform scale(1)
 
-.clock-container 
+.clock-container
   display flex
   align-items center
-  &.mobile 
+  &.mobile
     flex-wrap wrap
     justify-content center
-    .mode 
+    .mode
       width 100%
       justify-content center
-    
-    .colon 
+
+    .colon
       visibility hidden
-    
-  
-  .mode 
+
+
+  .mode
     transition all 0.3s
     display flex
-  
 
-.colon 
+
+.colon
   height 50px
   padding 0 10px
   display flex
   justify-content space-around
   flex-direction column
   &::after,
-  &::before 
+  &::before
     content ""
     display block
     width 10px
     height 10px
     background rgba(0, 0, 0, 0.7)
     border-radius 50%
-  
-
 </style>
