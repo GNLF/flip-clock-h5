@@ -12,21 +12,18 @@
     .mode
       flip-item(:total="5" :current="timeArr[4]")
       flip-item(:total="9" :current="timeArr[5]")
-  .date(:class="screenTransform ? 'horizontal': 'vertical'")
+  .date(:class="screenTransform ? 'horizontal' : 'vertical'")
     p {{ date }}
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref, onBeforeMount, onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import FlipItem from './components/FlipItem.vue'
 import { getTimeArr, getDate } from './utils'
 
-defineComponent({
-  name: 'App',
-  components: {
-    FlipItem
-  }
-})
+const timeArr = ref<number[]>([])
+const screenTransform = ref<boolean>(window.innerHeight < window.innerWidth)
+const date = ref<string>('')
 
 onBeforeMount(() => {
   startTimer()
@@ -35,24 +32,15 @@ onBeforeMount(() => {
   }
 })
 
-const timeArr = ref<number[]>([])
-const screenTransform = ref<boolean>(window.innerHeight < window.innerWidth)
-const date = ref<string>('')
-
 let timer: number = 0
 const startTimer = (): void => {
   timer = setTimeout(() => {
-    stopTimer()
+    clearTimeout(timer)
     timeArr.value = getTimeArr()
     date.value = getDate(new Date(), '{y}-{m}-{d}')
     startTimer()
   }, 1000)
 };
-
-const stopTimer = () => {
-  clearTimeout(timer)
-}
-
 
 </script>
 
